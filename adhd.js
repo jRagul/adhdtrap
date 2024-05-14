@@ -80,6 +80,8 @@ function createCircle(size){
 createCircle(2000)
 
 function animate(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
     requestAnimationFrame(animate);
     c.clearRect(0,0,innerWidth,innerHeight)
     for(i=0;i<circleArr.length;i++){
