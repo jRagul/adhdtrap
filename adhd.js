@@ -16,11 +16,41 @@ let colorArray = [
     '#06D6A0',
     '#FCFCFC'
 ]
-window.addEventListener('mousemove',function(event){
-    mouse.x = event.x;
-    mouse.y = event.y;
-    
-})
+
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+// Add touch event listeners only if the device is mobile
+if (isMobile) {
+    let touchActive = false;
+
+    window.addEventListener('touchstart', function(event) {
+        touchActive = true;
+        updateMouse(event.touches[0]);
+    });
+
+    window.addEventListener('touchmove', function(event) {
+        if (touchActive) {
+            event.preventDefault();
+            updateMouse(event.touches[0]);
+        }
+    });
+
+    window.addEventListener('touchend', function(event) {
+        touchActive = false;
+    });
+
+    function updateMouse(touch) {
+        mouse.x = touch.clientX;
+        mouse.y = touch.clientY;
+    }
+}
+else{
+    window.addEventListener('mousemove',function(event){
+        mouse.x = event.x;
+        mouse.y = event.y;
+    })
+}
+
 
 function Circle(x,y,dx,dy,radius){
     this.x = x;
@@ -76,8 +106,8 @@ function createCircle(size){
         circleArr.push(new Circle(x,y,dx,dy,radius))
     }
 }
-
-createCircle(2000)
+let numCircles = window.innerWidth < 768 ? 500 : 2000;
+createCircle(numCircles)
 
 function animate(){
     canvas.width = window.innerWidth;
